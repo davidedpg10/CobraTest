@@ -1,0 +1,41 @@
+version: "1.0"
+vars:
+  appVersion: 1.0.0
+  app_dir: './cmd'
+  output_dir: './build'
+tasks:
+  build-linux:
+  - description: Build project for Linux
+    action: build
+    params:
+      source: '{{app_dir}}'
+      outputPath: '{{output_dir}}/linux_amd64/promptui'
+      params:
+        stripDebugInfo: true
+      target:
+          os: linux     # default: current OS
+          arch: 'amd64'     # default: current arch
+
+  build-windows:
+  - description: Build project for Windows 
+    action: build
+    params:
+      source: '{{app_dir}}'
+      outputPath: '{{output_dir}}/windows_amd64/promptui.exe'
+      params:
+        stripDebugInfo: true
+      target:
+          os: windows
+          arch: 'amd64'
+
+  clean:
+  - if: file ./vendor
+    description: Remove vendor files
+    action: shell
+    params:
+      command: rm -rf ./vendor
+  - if: dir ./build
+    description: Remove build files
+    action: shell
+    params:
+      command: rm -rf ./build
